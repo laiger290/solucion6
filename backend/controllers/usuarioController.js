@@ -13,6 +13,7 @@ function guardar(req, res) {
     User.nombre = req.body.usuario;
     User.mail = req.body.mail;
     User.pass = req.body.pass;
+    User.activo = req.body.activo;
 
 
     User.save((err, usuariorstore) => {
@@ -24,6 +25,9 @@ function guardar(req, res) {
     })
 }
 
+
+
+/*
 function validar(req, res) {
 
 
@@ -50,7 +54,35 @@ function validar(req, res) {
  
 
 
+}*/
+
+//validar nuevo
+const validar = async (req, res) => {
+
+
+    var password = req.body.pass;
+    const email = req.body.mail
+
+    const user = await Usuario.findOne({mail: email});
+
+    if (!user) return res.status(401).send({ mensaje: 'Error usuario no existe' })
+    if(!user.activo) return res.status(401).send({ mensaje: 'Usuario inactivo', estado:false })    
+    user._id
+    bcrypt.compare(password, user.pass, function(error, isMatch) {
+            if (error) {
+                res.status(500).send(`Error al validar usuario> ${error}`)
+            } else if (!isMatch) {
+                res.status(401).send({ 'mensaje':'incorrecto', estado:false})
+            } else { 
+                res.status(200).send({ 'mensaje':'correcto','token':servicio.createToken(user), estado:true})
+
+            }
+    });
 }
+
+
+
+
 
 function todos(req, res) {
     Usuario.find({}, (err, usuario) => {
@@ -62,7 +94,23 @@ function todos(req, res) {
 
 }
 
-const validaVigenciaUsuario = (req,res) =>{
+
+
+function p(req, res) {
+    activo.find({}, (err, activo) => {
+        if (err) return res.status(500).send({ message: 'error al realizar la peticion' })
+        if (!activo) return res.status(404).send({ message: 'Error la persona no existe' })
+
+        res.status(200).send({ activo})
+    })
+
+}
+
+
+
+
+
+/*const validaVigenciaUsuario = (req,res) =>{
 
 
     Usuario.findById(req.user, function (err, usuario) {
@@ -71,7 +119,55 @@ const validaVigenciaUsuario = (req,res) =>{
         return  res.status(200).send({'usuario':usuario.mail});
     });
  
+}*/
+const validaVigenciaUsuario = (req,res) =>{
+
+
+    Usuario.findById(req.user, function (err, usuario) {
+        if (err) return res.status(401).send({'mensaje':'usuario no autorizado'})
+
+        return  res.status(200).send({'usuario':usuario.mail, 'activo':usuario.activo});
+    });
+ 
 }
+
+
+
+//activar usuario 
+const activar = async (req, res)=>{
+    const {id} = req.params;   
+    const  usuario =  await Usuario.findByIdAndUpdate( id, {activo:true},(err, docs)=>{
+        if(err){
+            console.log(" El error es: "+err);
+        }else{
+            console.log("Updated User : ", docs);
+        }
+    });
+    
+    res.status(400).json({
+        msg:"usuario activado",
+        usuario 
+    });
+}
+
+//desactivar usuario 
+const desactivar = async (req, res)=>{
+    const {id} = req.params;  
+    console.log(id) 
+    const  usuario =  await Usuario.findByIdAndUpdate( id,{activo:false}, (err, docs)=>{
+        if(err){
+            console.log(" El error es: "+err);
+        }else{
+            console.log("Updated User : ", docs);
+        }
+    }); 
+    res.status(400).json({
+        msg:"usuario desactivado",
+        usuario
+    });
+}
+
+
 
 
 
@@ -79,6 +175,10 @@ module.exports = {
     guardar,
     todos,
     validar,
-    validaVigenciaUsuario
+    validaVigenciaUsuario,
+    activar,
+    desactivar,
+   // p,
+
 
 };

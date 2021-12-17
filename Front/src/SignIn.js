@@ -79,6 +79,7 @@ const SignIn = ({}) => {
 
 
                 localStorage.setItem('TOKEN_APP_TALLER',response.data.token)
+                localStorage.setItem('user', response.data)
             
           
                 window.location='/menu'

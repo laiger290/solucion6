@@ -81,6 +81,7 @@ const Usuarios= ()=>{
       columns={[
         { name: "Id", field: "_id" },
         { name: "mail", field: "mail" }
+       
       ]}
       data={data}
     />

@@ -6,7 +6,11 @@ const UsuarioSchema = Schema(
     {
       nombre:String,
       mail: String,
-      pass:String
+      pass:String,
+      activo:{
+        type:Boolean,
+        default: true
+      }
      
       
 

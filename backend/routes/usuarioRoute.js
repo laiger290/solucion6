@@ -16,6 +16,10 @@ api.post('/usuario', userController.guardar);
 api.get('/usuario', auth.isAuth,userController.todos);
 api.post('/usuario/validar', userController.validar);
 api.post('/usuario/vigencia',auth.isAuth,userController.validaVigenciaUsuario);
+//rutas para activar o desactivar usuario
+api.get('/usuario/activar/:id', userController.activar);
+api.get('/usuario/desactivar/:id', userController.desactivar);
+//api.get('/usuario/estado', userController.p);
 
 // api.post('/autoguardar',autoController.guardar);
 

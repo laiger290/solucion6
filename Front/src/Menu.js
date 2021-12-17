@@ -7,6 +7,12 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Usuarios from './Usuarios';
+import axios from 'axios';
+
+
+
+
+
 
 
 function TabPanel(props) {
@@ -52,12 +58,47 @@ const useStyles = makeStyles((theme) => ({
 export default function Menu() {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
+    
+
+
+
+
+
+
+
+
+
+    const getUser2 = async () => {
+        await axios.get("/api/usuario/estado?_id")
+          .then(res => {
+            console.log(res.data.usuario);
+            
+          })
+          .catch(res => {
+            console.error(res);
+          })
+      }
+
+
+
+
+
+
+    
 
     useEffect(() => {
         const token = localStorage.getItem('TOKEN_APP_TALLER');
-        if (token == null) {
+      
+        window.localStorage.setItem('usuarioid',JSON.stringify(token))
+        if (token == null ) {
             window.location = '/';
         }
+
+        getUser2();
+        
+       
+
+      
     }, []);
 
     const handleChange = (event, newValue) => {

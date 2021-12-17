@@ -9,6 +9,7 @@ function createToken(user)
 
     const payload ={
         sub: user._id,
+        at: user.activo,
         iat: moment().unix(),
         exp:moment().add(14,'days').unix(), 
     }
