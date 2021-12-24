@@ -74,7 +74,10 @@ const validar = async (req, res) => {
             } else if (!isMatch) {
                 res.status(401).send({ 'mensaje':'incorrecto', estado:false})
             } else { 
-                res.status(200).send({ 'mensaje':'correcto','token':servicio.createToken(user), estado:true})
+              
+                const token =servicio.createToken(user)
+               
+                res.status(200).send({ 'mensaje':'correcto','token':token, estado:true})
 
             }
     });
@@ -90,18 +93,6 @@ function todos(req, res) {
         if (!usuario) return res.status(404).send({ message: 'Error la persona no existe' })
 
         res.status(200).send({ usuario })
-    })
-
-}
-
-
-
-function p(req, res) {
-    activo.find({}, (err, activo) => {
-        if (err) return res.status(500).send({ message: 'error al realizar la peticion' })
-        if (!activo) return res.status(404).send({ message: 'Error la persona no existe' })
-
-        res.status(200).send({ activo})
     })
 
 }
@@ -131,7 +122,19 @@ const validaVigenciaUsuario = (req,res) =>{
  
 }
 
+//buscar usuario por id
+const findbyId = (req,res) =>{
 
+    
+    Usuario.findById({_id:req.params.id}, function (err, usuario) {
+        if (err) {
+            console.log(err)
+            return res.status(401).send({'mensaje':'usuario no autorizado'})}
+        
+        return  res.status(200).send({'usuario':usuario});
+    });
+ 
+}
 
 //activar usuario 
 const activar = async (req, res)=>{
@@ -178,7 +181,7 @@ module.exports = {
     validaVigenciaUsuario,
     activar,
     desactivar,
-   // p,
+    findbyId,
 
 
 };

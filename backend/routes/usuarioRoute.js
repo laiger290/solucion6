@@ -10,7 +10,7 @@ var userController = require('../controllers/usuarioController');
 const auth = require('../middlewares/auth')
 // Llamamos al router
 var api = express.Router();
- 
+ //findbyId
 //  Guardar usuario
 api.post('/usuario', userController.guardar);
 api.get('/usuario', auth.isAuth,userController.todos);
@@ -20,7 +20,8 @@ api.post('/usuario/vigencia',auth.isAuth,userController.validaVigenciaUsuario);
 api.get('/usuario/activar/:id', userController.activar);
 api.get('/usuario/desactivar/:id', userController.desactivar);
 //api.get('/usuario/estado', userController.p);
-
+//api para mostrar info de usuario por id
+api.get('/usuario/id/:id', userController.findbyId);
 // api.post('/autoguardar',autoController.guardar);
 
 // Exportamos la confi,guración

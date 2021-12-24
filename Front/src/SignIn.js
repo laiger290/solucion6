@@ -65,7 +65,7 @@ const SignIn = ({}) => {
     const onSubmit = data => {
 
 
-        console.log(data.email);
+        
         axios
         .post("/api/usuario/validar", {
             mail:data.email,
@@ -73,7 +73,7 @@ const SignIn = ({}) => {
         })
         .then(
           (response) => {
-             console.log(response.data);
+           
             
               if(response.data.mensaje=='correcto'){
 

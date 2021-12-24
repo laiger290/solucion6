@@ -68,17 +68,6 @@ export default function Menu() {
 
 
 
-    const getUser2 = async () => {
-        await axios.get("/api/usuario/estado?_id")
-          .then(res => {
-            console.log(res.data.usuario);
-            
-          })
-          .catch(res => {
-            console.error(res);
-          })
-      }
-
 
 
 
@@ -89,12 +78,13 @@ export default function Menu() {
     useEffect(() => {
         const token = localStorage.getItem('TOKEN_APP_TALLER');
       
-        window.localStorage.setItem('usuarioid',JSON.stringify(token))
+        //window.localStorage.setItem('usuarioid',JSON.stringify(token))
+        console.log(token)
         if (token == null ) {
             window.location = '/';
         }
 
-        getUser2();
+       
         
        
 

@@ -17,7 +17,7 @@ const Usuarios= ()=>{
     .get("/api/usuario")
     .then(
       (response) => {
-         console.log(response.data);
+        
         
          setData(response.data.usuario)
          
@@ -27,12 +27,13 @@ const Usuarios= ()=>{
      
     )
     .catch((err) => {
-        
+        console.log(err)
         
         if (err.response) {
             if(err.response.status==401){
                 let motivo= err.response.data.mensaje;
-                alert(`No autorizado:${motivo}`)
+                window.location='/login'
+                //alert(`No autorizado:${motivo}`)
             }
             console.log(err.response.data.mensaje)
           } else if (err.request) {
